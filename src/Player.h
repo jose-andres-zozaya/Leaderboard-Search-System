@@ -1,7 +1,7 @@
 #pragma once
 #include <string>
 
-struct player {
+struct Player {
     std::string title;
     std::string username;
     std::string name;
