@@ -2,6 +2,7 @@
 #include <fstream>
 #include <sstream>
 #include <iostream>
+#include <algorithm>
 
 std::vector<Player> loadPlayers(const std::string &path) {
     std::vector<Player> players;
@@ -29,6 +30,7 @@ std::vector<Player> loadPlayers(const std::string &path) {
             Player p;
             p.title = f[0];
             p.username = f[1];
+            p.name = f[2];
             p.rating = std::stoi(f[3]);
             p.country = f[4];
             p.games = std::stoi(f[5]);
@@ -45,5 +47,22 @@ std::vector<Player> loadPlayers(const std::string &path) {
     }
 
     std::cout << "Loaded " << players.size() << " player, skipped " << skipped << std::endl;
+    assignRanks(players);
     return players;
+}
+
+void assignRanks(std::vector<Player> &players) {
+    auto higherRating = [](const Player& a, const Player& b) {
+        return a.rating > b.rating;
+    };
+    if (!std::is_sorted(players.begin(), players.end(), higherRating)) {
+        std::stable_sort(players.begin(), players.end(), higherRating);
+    }
+    for (size_t i = 0; i < players.size(); i++) {
+        if (i > 0 && players[i].rating == players[i-1].rating) {
+            players[i].rank = players[i-1].rank;
+        } else {
+            players[i].rank = static_cast<int>(i) + 1;
+        }
+    }
 }

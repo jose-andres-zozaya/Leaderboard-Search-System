@@ -4,3 +4,5 @@
 #include "Player.h"
 
 std::vector<Player> loadPlayers(const std::string& path);
+
+void assignRanks(std::vector<Player> & players);
