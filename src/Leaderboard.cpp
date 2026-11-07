@@ -21,3 +21,7 @@ std::vector<Player> searchPlayers(const std::vector<Player>& players, Field fiel
     }
     return result;
 }
+
+double percentile(int rank, int total) {
+    return 100.0 * (total - rank) / (total - 1); // rank 1 is 100, last place is 0
+}

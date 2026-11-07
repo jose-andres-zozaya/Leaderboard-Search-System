@@ -31,11 +31,12 @@ void runTerminal(const std::vector<Player>& players) {
         attrset(COLOR_PAIR(1));
         mvprintw(0, 29, ">");
         attrset(A_DIM);
-        mvprintw(1, 0, "   RANK  USERNAME                    WIN %%");
+        mvprintw(1, 0, "   RANK  USERNAME                    WIN %%  PERCENTILE");
         attrset(A_NORMAL);
         for (int i = 0; i < page && offset + i < count; i++) {
             const Player& p = result[offset + i];
-            mvprintw(2 + i, 0, "%7d  %-25.25s%7.1f", p.rank, p.username.c_str(), p.wonPercent);
+            mvprintw(2 + i, 0, "%7d  %-25.25s%7.1f%11.1f", p.rank, p.username.c_str(), p.wonPercent,
+                     percentile(p.rank, players.size()));
         }
         attrset(COLOR_PAIR(1));
         mvprintw(LINES - 1, 0, "Heap sort");
