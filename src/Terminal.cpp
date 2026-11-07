@@ -40,6 +40,7 @@ void runTerminal(const std::vector<Player>& players) {
             mvprintw(2 + i, 0, "%7d  %-25.25s%7.1f%11.1f", p.rank, p.username.c_str(), p.wonPercent,
                      percentile(p.rank, players.size()));
         }
+        if (searched && count == 0) mvprintw(2, 0, "No results found");
         attrset(COLOR_PAIR(1));
         mvprintw(LINES - 1, 0, "Heap sort");
         if (searched) printw("   %.2f ms   %d results", sortMs, count);
@@ -65,6 +66,8 @@ void runTerminal(const std::vector<Player>& players) {
             offset = 0; // jump back to the top
         } else if (key == KEY_UP) offset = std::max(0, offset - 1);
         else if (key == KEY_DOWN) offset = std::min(offset + 1, std::max(0, count - page));
+        else if (key == KEY_PPAGE) offset = std::max(0, offset - page);
+        else if (key == KEY_NPAGE) offset = std::min(offset + page, std::max(0, count - page));
         else if ((key == KEY_BACKSPACE || key == 127) && !query.empty()) query.pop_back();
         else if (key >= 32 && key <= 126) query += static_cast<char>(key);
     }
