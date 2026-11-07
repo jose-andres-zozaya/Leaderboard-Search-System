@@ -1,6 +1,7 @@
 #include "Terminal.h"
 #include "HeapSort.h"
 #include <algorithm>
+#include <chrono>
 #include <curses.h>
 
 void runTerminal(const std::vector<Player>& players) {
@@ -16,6 +17,7 @@ void runTerminal(const std::vector<Player>& players) {
     Field field = Field::Username;
     std::string query;
     std::vector<Player> result;
+    double sortMs = 0;
     int offset = 0; // first result shown on screen
     bool searched = false;
 
@@ -40,7 +42,7 @@ void runTerminal(const std::vector<Player>& players) {
         }
         attrset(COLOR_PAIR(1));
         mvprintw(LINES - 1, 0, "Heap sort");
-        if (searched) printw("   %d results", count);
+        if (searched) printw("   %.2f ms   %d results", sortMs, count);
         attrset(A_NORMAL);
         mvprintw(0, 31, "%s", query.c_str());
         refresh();
@@ -53,8 +55,11 @@ void runTerminal(const std::vector<Player>& players) {
             result.clear();
             searched = false;
         } else if (key == '\n') {
+            // sort a fresh copy each search and time how long it takes
             std::vector<Player> sorted = players;
+            auto start = std::chrono::steady_clock::now();
             heapSort(sorted, field);
+            sortMs = std::chrono::duration<double, std::milli>(std::chrono::steady_clock::now() - start).count();
             result = searchPlayers(sorted, field, query);
             searched = true;
             offset = 0; // jump back to the top
