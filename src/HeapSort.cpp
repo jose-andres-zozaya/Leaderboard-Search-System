@@ -1,12 +1,6 @@
 #include "HeapSort.h"
 #include <utility>
 
-bool comesBefore(const Player& a, const Player& b, Field field) {
-    if (field == Field::Rank && a.rank != b.rank) return a.rank < b.rank;
-    if (field == Field::WinRate && a.wonPercent != b.wonPercent) return a.wonPercent > b.wonPercent;
-    return a.username < b.username; // ties fall back to username
-}
-
 void siftDown(std::vector<Player>& players, int root, int size, Field field) {
     while (2 * root + 1 < size) {
         int child = 2 * root + 1;

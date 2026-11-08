@@ -2,6 +2,12 @@
 #include <cctype>
 #include <cstdlib>
 
+bool comesBefore(const Player& a, const Player& b, Field field) {
+    if (field == Field::Rank && a.rank != b.rank) return a.rank < b.rank;
+    if (field == Field::WinRate && a.wonPercent != b.wonPercent) return a.wonPercent > b.wonPercent;
+    return a.username < b.username;
+}
+
 std::string lowercase(std::string text) {
     for (char& c : text) c = std::tolower(c);
     return text;

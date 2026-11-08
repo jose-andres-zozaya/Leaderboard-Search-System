@@ -4,6 +4,8 @@
 
 enum class Field { Username, WinRate, Rank };
 
+bool comesBefore(const Player& a, const Player& b, Field field);
+
 std::vector<Player> searchPlayers(const std::vector<Player>& players, Field field,
                                   const std::string& query);
 double percentile(int rank, int total);
