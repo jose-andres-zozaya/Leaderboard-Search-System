@@ -51,7 +51,7 @@ std::vector<Player> loadPlayers(const std::string &path) {
     return players;
 }
 
-void assignRanks(std::vector<Player> &players) {
+void assignRanks(std::vector<Player> &players) { // ensures ranks are properly assgined and accounts for ties, ranks is derived from this function and not the dataset itself
     auto higherRating = [](const Player& a, const Player& b) {
         return a.rating > b.rating;
     };
