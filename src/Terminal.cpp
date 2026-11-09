@@ -101,7 +101,7 @@ void runTerminal(const std::vector<Player>& players) {
                 comparisons = compareSorts(players, field);
             }
             showComparison = !showComparison;
-        } else if (key == '\n') {
+        } else if (key == '\n' || key == '\r' || key == KEY_ENTER) {
             invalidQuery = !validSearchQuery(field, query);
             if (invalidQuery) continue;
             // sort a fresh copy each search and time how long it takes
@@ -115,7 +115,7 @@ void runTerminal(const std::vector<Player>& players) {
         else if (key == KEY_DOWN) offset = std::min(offset + 1, std::max(0, count - page));
         else if (key == KEY_PPAGE) offset = std::max(0, offset - page);
         else if (key == KEY_NPAGE) offset = std::min(offset + page, std::max(0, count - page));
-        else if ((key == KEY_BACKSPACE || key == 127) && !query.empty()) {
+        else if ((key == KEY_BACKSPACE || key == 127 || key == 8) && !query.empty()) {
             query.pop_back();
             invalidQuery = false;
         } else if (key >= 32 && key <= 126) {
